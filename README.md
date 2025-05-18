@@ -25,7 +25,7 @@ A ideia do projeto é oferecer uma forma simples de salvar contatos e seus respe
    ```bash
    npm install
    ```
-4. Crie um arquivo `.env` na raiz do projeto com a seguinte variável de ambiente:
+4. Crie um arquivo `.env.local` na raiz do projeto com a seguinte variável de ambiente:
 
    ```
    VITE_GOOGLE_MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY
