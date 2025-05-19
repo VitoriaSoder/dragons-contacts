@@ -149,9 +149,10 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Usuário' }) => {
                       Configurar Conta
                     </div>
                   </Link>
-                  <button
+                  <Button
                     onClick={handleLogoutClick}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-primary transition-colors"
+                    variant="secondary"
+                    className="block w-full text-left py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-primary transition-colors bg-transparent"
                   >
                     <div className="flex items-center">
                       <svg
@@ -170,7 +171,7 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Usuário' }) => {
                       </svg>
                       Sair
                     </div>
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
@@ -296,12 +297,13 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Usuário' }) => {
                       Configurar Conta
                     </div>
                   </Link>
-                  <button
+                  <Button
                     onClick={() => {
                       setIsMobileMenuOpen(false);
                       handleLogoutClick();
                     }}
-                    className="py-2 px-2 text-gray-700 hover:text-primary hover:bg-blue-50 rounded-md transition-colors w-full text-left"
+                    variant="secondary"
+                    className="py-2 !px-2 text-gray-700 hover:text-primary hover:bg-blue-50 rounded-md transition-colors w-full text-left bg-transparent"
                   >
                     <div className="flex items-center">
                       <svg
@@ -320,7 +322,7 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Usuário' }) => {
                       </svg>
                       Sair
                     </div>
-                  </button>
+                  </Button>
                 </nav>
               </div>
             </div>

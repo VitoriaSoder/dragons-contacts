@@ -74,7 +74,3 @@ O projeto segue uma estrutura organizada por recursos:
 - `/src/types`: Definições de tipos TypeScript
 - `/src/schemas`: Esquemas de validação
 - `/src/routes`: Configuração de rotas
-
-```
-
-```
