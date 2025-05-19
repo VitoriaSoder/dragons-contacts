@@ -18,6 +18,20 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html,
+body {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  position: relative;
+}
+
 a {
   font-weight: 500;
   color: #2ec7d6;
@@ -25,13 +39,6 @@ a {
 }
 a:hover {
   color: #22a5b2;
-}
-
-body {
-  margin: 0;
-
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {

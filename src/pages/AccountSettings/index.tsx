@@ -131,10 +131,10 @@ const AccountSettings: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 gap-8">
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <Header userName={name} />
 
-      <main className="flex-1 overflow-hidden bg-gray-50 mt-20">
+      <main className="flex-1 bg-gray-50 mt-20">
         <div className="mx-auto max-w-[1024px] p-6">
           <div className="mb-6">
             <BackButton />

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Button from './Button';
 
 interface HeaderProps {
   userName?: string;
@@ -96,10 +97,7 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Usuário' }) => {
 
         <div className="hidden md:flex md:items-center">
           <div className="relative" ref={menuRef}>
-            <button
-              onClick={toggleMenu}
-              className="flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
-            >
+            <Button onClick={toggleMenu} variant="secondary" className="flex items-center gap-2">
               <div className="w-8 h-8 bg-primary text-white flex items-center justify-center rounded-full text-sm font-bold">
                 {userName ? userName.charAt(0).toUpperCase() : 'U'}
               </div>
@@ -118,14 +116,14 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Usuário' }) => {
                   d="M19 9l-7 7-7-7"
                 />
               </svg>
-            </button>
+            </Button>
 
             {isMenuOpen && (
               <div className="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-md border border-gray-200 z-10 overflow-hidden">
                 <div className="py-1">
                   <Link
                     to="/account-settings"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-primary"
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-primary transition-colors"
                   >
                     <div className="flex items-center">
                       <svg
@@ -151,10 +149,9 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Usuário' }) => {
                       Configurar Conta
                     </div>
                   </Link>
-                  <Link
-                    to="/login"
+                  <button
                     onClick={handleLogoutClick}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-primary"
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-primary transition-colors"
                   >
                     <div className="flex items-center">
                       <svg
@@ -173,7 +170,7 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Usuário' }) => {
                       </svg>
                       Sair
                     </div>
-                  </Link>
+                  </button>
                 </div>
               </div>
             )}
@@ -181,14 +178,15 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Usuário' }) => {
         </div>
 
         <div className="md:hidden z-50" ref={mobileMenuRef}>
-          <button
+          <Button
             onClick={toggleMobileMenu}
-            className="p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none"
+            variant="primary"
+            className="p-2 rounded-md focus:outline-none"
             aria-label="Menu principal"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
+              className="h-6 w-6 text-white"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -209,7 +207,7 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Usuário' }) => {
                 />
               )}
             </svg>
-          </button>
+          </Button>
 
           {isMobileMenuOpen && (
             <div className="absolute top-full right-0 left-0 mt-1 bg-white shadow-lg border border-gray-200 z-50">
@@ -224,7 +222,7 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Usuário' }) => {
                 <nav className="flex flex-col">
                   <Link
                     to="/dashboard"
-                    className="py-2 px-2 text-gray-700 hover:text-primary hover:bg-blue-50 rounded-md"
+                    className="py-2 px-2 text-gray-700 hover:text-primary hover:bg-blue-50 rounded-md transition-colors"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <div className="flex items-center">
@@ -247,7 +245,7 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Usuário' }) => {
                   </Link>
                   <Link
                     to="/add-contact"
-                    className="py-2 px-2 text-gray-700 hover:text-primary hover:bg-blue-50 rounded-md"
+                    className="py-2 px-2 text-gray-700 hover:text-primary hover:bg-blue-50 rounded-md transition-colors"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <div className="flex items-center">
@@ -271,7 +269,7 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Usuário' }) => {
                   <hr className="my-2" />
                   <Link
                     to="/account-settings"
-                    className="py-2 px-2 text-gray-700 hover:text-primary hover:bg-blue-50 rounded-md"
+                    className="py-2 px-2 text-gray-700 hover:text-primary hover:bg-blue-50 rounded-md transition-colors"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <div className="flex items-center">
@@ -298,10 +296,12 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Usuário' }) => {
                       Configurar Conta
                     </div>
                   </Link>
-                  <Link
-                    to="/login"
-                    onClick={handleLogoutClick}
-                    className="py-2 px-2 text-gray-700 hover:text-primary hover:bg-blue-50 rounded-md w-full text-left"
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      handleLogoutClick();
+                    }}
+                    className="py-2 px-2 text-gray-700 hover:text-primary hover:bg-blue-50 rounded-md transition-colors w-full text-left"
                   >
                     <div className="flex items-center">
                       <svg
@@ -320,7 +320,7 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Usuário' }) => {
                       </svg>
                       Sair
                     </div>
-                  </Link>
+                  </button>
                 </nav>
               </div>
             </div>

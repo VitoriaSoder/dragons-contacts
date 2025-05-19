@@ -24,7 +24,6 @@ const Dashboard: React.FC = () => {
     }
   }, [navigate]);
 
-  // Seleciona automaticamente o primeiro contato ao carregar ou atualizar a lista
   useEffect(() => {
     const sortedFilteredContacts = getSortedFilteredContacts();
     if (sortedFilteredContacts.length > 0) {
@@ -57,15 +56,15 @@ const Dashboard: React.FC = () => {
   const sortedContacts = getSortedFilteredContacts();
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen">
       <Header userName={userName} />
 
-      <main className="flex-1 overflow-hidden bg-gray-50 mt-16">
+      <main className="flex-1 bg-gray-50 mt-16">
         <div className="mx-auto px-4 py-8" style={{ maxWidth: '1400px' }}>
           <h1 className="text-2xl font-bold text-gray-800 mb-6">Contatos</h1>
 
-          <div className="flex items-center mb-6">
-            <div className="flex-grow mr-4">
+          <div className="flex flex-col md:flex-row items-center mb-6 gap-4">
+            <div className="w-full md:flex-grow">
               <Input
                 type="text"
                 placeholder="Pesquisar por nome ou CPF..."
@@ -75,35 +74,41 @@ const Dashboard: React.FC = () => {
               />
             </div>
 
-            <SortButton
-              direction={orderBy}
-              className="mr-4"
-              onClick={() => setOrderBy(orderBy === 'asc' ? 'desc' : 'asc')}
-            />
+            <div className="flex items-center gap-4 w-full md:w-auto">
+              <SortButton
+                direction={orderBy}
+                onClick={() => setOrderBy(orderBy === 'asc' ? 'desc' : 'asc')}
+              />
 
-            <Button onClick={handleAddContact} size="md" variant="primary">
-              <span className="flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-                Adicionar Contato
-              </span>
-            </Button>
+              <Button
+                onClick={handleAddContact}
+                size="md"
+                variant="primary"
+                className="w-full md:w-auto"
+              >
+                <span className="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  Contato
+                </span>
+              </Button>
+            </div>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-4 h-full">
-            <div className="w-full md:w-2/5 lg:w-1/3 h-[500px] md:h-[calc(100vh-220px)]">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="w-full md:w-2/5 lg:w-1/3 h-[500px] md:h-[calc(100vh-220px)] overflow-y-auto">
               <ContactsList className="h-full" contacts={sortedContacts} />
             </div>
             <div className="w-full md:w-3/5 lg:w-2/3 h-[500px] md:h-[calc(100vh-220px)]">

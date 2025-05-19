@@ -10,12 +10,11 @@ const MapView: React.FC<MapViewProps> = ({ className = '' }) => {
   const { contacts, selectedContact } = useContact();
   const [zoom, setZoom] = useState(12);
 
-  // Aumenta o zoom quando um contato é selecionado
   useEffect(() => {
     if (selectedContact?.latitude && selectedContact?.longitude) {
-      setZoom(17); // Zoom maior quando um contato é selecionado
+      setZoom(17);
     } else {
-      setZoom(12); // Zoom normal para visualização geral
+      setZoom(12);
     }
   }, [selectedContact]);
 

@@ -31,18 +31,15 @@ interface ContactFormResult {
   isLoading: boolean;
   addressResults: ViaCepResponse[];
   showAddressSearch: boolean;
-  stateSearch: string;
-  citySearch: string;
-  streetSearch: string;
+  addressSearch: string;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleZipSearch: () => Promise<void>;
-  handleAddressSearch: (e: React.FormEvent) => Promise<void>;
+  handleAddressSearch: () => Promise<void>;
   handleSelectAddress: (address: ViaCepResponse) => void;
   handleSubmit: (e: React.FormEvent) => void;
-  setStateSearch: (value: string) => void;
-  setCitySearch: (value: string) => void;
-  setStreetSearch: (value: string) => void;
+  setAddressSearch: (value: string) => void;
   setShowAddressSearch: (value: boolean) => void;
+  setFormData: React.Dispatch<React.SetStateAction<ContactFormState>>;
+  setAddressResults: React.Dispatch<React.SetStateAction<ViaCepResponse[]>>;
 }
 
 export const useContactForm = (contact?: Contact, onClose?: () => void): ContactFormResult => {
@@ -50,6 +47,7 @@ export const useContactForm = (contact?: Contact, onClose?: () => void): Contact
   const [isLoading, setIsLoading] = useState(false);
   const [addressResults, setAddressResults] = useState<ViaCepResponse[]>([]);
   const [showAddressSearch, setShowAddressSearch] = useState(false);
+  const [addressSearch, setAddressSearch] = useState('');
   const isEditMode = !!contact;
 
   const initialFormState: ContactFormState = {
@@ -67,9 +65,6 @@ export const useContactForm = (contact?: Contact, onClose?: () => void): Contact
   };
 
   const [formData, setFormData] = useState<ContactFormState>(initialFormState);
-  const [stateSearch, setStateSearch] = useState('');
-  const [citySearch, setCitySearch] = useState('');
-  const [streetSearch, setStreetSearch] = useState('');
 
   useEffect(() => {
     if (contact) {
@@ -102,39 +97,54 @@ export const useContactForm = (contact?: Contact, onClose?: () => void): Contact
     setFormData(prev => ({ ...prev, [name]: formattedValue }));
   };
 
-  const handleZipSearch = async () => {
-    if (!formData.postalCode) return;
-
-    setIsLoading(true);
-    try {
-      const data = await getAddressByCEP(formData.postalCode);
-      if (data) {
-        setFormData(prev => ({
-          ...prev,
-          street: data.logradouro,
-          neighborhood: data.bairro,
-          city: data.localidade,
-          state: data.uf,
-          complement: data.complemento,
-        }));
-      }
-    } catch (error) {
-      handleError(error, 'Erro ao buscar CEP');
-    } finally {
-      setIsLoading(false);
+  const handleAddressSearch = async () => {
+    if (!addressSearch) {
+      handleError('Digite um endereço para buscar');
+      return;
     }
-  };
-
-  const handleAddressSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!stateSearch || !citySearch || !streetSearch) return;
 
     setIsLoading(true);
     try {
-      const results = await searchAddressByLocation(stateSearch, citySearch, streetSearch);
+      const cepMatch = addressSearch.match(/\d{5}-?\d{3}/);
+      if (cepMatch) {
+        const data = await getAddressByCEP(cepMatch[0]);
+        if (data) {
+          setFormData(prev => ({
+            ...prev,
+            street: data.logradouro,
+            neighborhood: data.bairro,
+            city: data.localidade,
+            state: data.uf,
+            complement: data.complemento,
+            postalCode: data.cep,
+          }));
+          setAddressResults([]);
+          return;
+        }
+      }
+
+      const searchTerms = addressSearch.split(',').map(term => term.trim());
+      if (searchTerms.length < 2) {
+        handleError('Digite o endereço no formato: rua, cidade, UF');
+        return;
+      }
+
+      const [street, city, state] = searchTerms;
+      if (!street || !city) {
+        handleError('Digite pelo menos a rua e a cidade');
+        return;
+      }
+
+      const results = await searchAddressByLocation(state || '', city, street);
+      if (results.length === 0) {
+        handleError('Nenhum endereço encontrado. Verifique se digitou corretamente.');
+        return;
+      }
+
       setAddressResults(results);
+      setShowAddressSearch(true);
     } catch (error) {
-      handleError(error, 'Erro ao buscar endereços');
+      handleError(error, 'Erro ao buscar endereço');
     } finally {
       setIsLoading(false);
     }
@@ -151,6 +161,7 @@ export const useContactForm = (contact?: Contact, onClose?: () => void): Contact
     }));
     setAddressResults([]);
     setShowAddressSearch(false);
+    setAddressSearch('');
   };
 
   const handleSubmit = (e: React.FormEvent): void => {
@@ -238,17 +249,14 @@ export const useContactForm = (contact?: Contact, onClose?: () => void): Contact
     isLoading,
     addressResults,
     showAddressSearch,
-    stateSearch,
-    citySearch,
-    streetSearch,
+    addressSearch,
     handleInputChange,
-    handleZipSearch,
     handleAddressSearch,
     handleSelectAddress,
     handleSubmit,
-    setStateSearch,
-    setCitySearch,
-    setStreetSearch,
+    setAddressSearch,
     setShowAddressSearch,
+    setFormData,
+    setAddressResults,
   };
 };

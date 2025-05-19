@@ -19,11 +19,11 @@ const AddContact: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <Header userName={userName || ''} />
 
-      <div className="pt-16 flex-1 overflow-auto">
-        <div className="p-4 overflow-auto">
+      <div className="pt-16 flex-1">
+        <div className="p-4">
           <div className="max-w-screen-lg mx-auto">
             <ContactForm onClose={handleClose} />
           </div>
