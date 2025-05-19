@@ -4,6 +4,13 @@ import { getAddressByCEP, searchAddressByLocation } from '../services/viacep';
 import type { Contact, ViaCepResponse } from '../types/contact';
 import { geocodeAddress } from '../utils/geocode';
 import { handleError } from '../utils/errorHandler';
+import {
+  formatCPF,
+  formatPhone,
+  validateCPF,
+  validatePhone,
+  validateEmail,
+} from '../utils/formatters';
 
 interface ContactFormState {
   name: string;
@@ -84,7 +91,15 @@ export const useContactForm = (contact?: Contact, onClose?: () => void): Contact
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    let formattedValue = value;
+
+    if (name === 'cpf') {
+      formattedValue = formatCPF(value);
+    } else if (name === 'phone') {
+      formattedValue = formatPhone(value);
+    }
+
+    setFormData(prev => ({ ...prev, [name]: formattedValue }));
   };
 
   const handleZipSearch = async () => {
@@ -140,6 +155,21 @@ export const useContactForm = (contact?: Contact, onClose?: () => void): Contact
 
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
+
+    if (!validateCPF(formData.cpf)) {
+      handleError('CPF inválido');
+      return;
+    }
+
+    if (!validatePhone(formData.phone)) {
+      handleError('Telefone inválido');
+      return;
+    }
+
+    if (!validateEmail(formData.email)) {
+      handleError('Email inválido');
+      return;
+    }
 
     const cpfExists = isEditMode
       ? contacts.some(

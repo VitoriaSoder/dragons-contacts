@@ -55,7 +55,7 @@ const AddressSearchModal: React.FC<AddressSearchModalProps> = ({
               required
             />
             <FormField
-              label="Logradouro"
+              label="Rua"
               name="streetSearch"
               value={streetSearch}
               onChange={e => setStreetSearch(e.target.value)}
